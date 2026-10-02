@@ -1,0 +1,148 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-latin), var(--font-cjk), "PingFang HK", sans-serif;
+  --font-heading: var(--font-sans);
+  --color-brand: var(--brand);
+  --color-brand-soft: var(--brand-soft);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-open: var(--open);
+  --color-open-soft: var(--open-soft);
+  --color-soon: var(--soon);
+  --color-soon-soft: var(--soon-soft);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/*
+ * One brand colour (CityU red) on a cool neutral paper. Status colours are
+ * reserved for opening state only.
+ */
+:root {
+  --brand: #a01c34;
+  --brand-soft: #f7e8eb;
+  --brand-foreground: #ffffff;
+  --open: #1f8a4c;
+  --open-soft: #e5f3ea;
+  --soon: #b7791f;
+  --soon-soft: #fbf0dc;
+
+  --background: #f6f6f5;
+  --foreground: #1c1917;
+  --card: #ffffff;
+  --card-foreground: #1c1917;
+  --popover: #ffffff;
+  --popover-foreground: #1c1917;
+  --primary: #a01c34;
+  --primary-foreground: #ffffff;
+  --secondary: #ececea;
+  --secondary-foreground: #1c1917;
+  --muted: #ececea;
+  --muted-foreground: #6f6a66;
+  --accent: #ececea;
+  --accent-foreground: #1c1917;
+  --destructive: #c2410c;
+  --border: #e3e2df;
+  --input: #dcdad7;
+  --ring: #a01c34;
+  --radius: 0.75rem;
+}
+
+.dark {
+  --brand: #e2556a;
+  --brand-soft: #3a1a20;
+  --brand-foreground: #1a0a0d;
+  --open: #4cc27c;
+  --open-soft: #173322;
+  --soon: #e3a64a;
+  --soon-soft: #3a2c14;
+
+  --background: #161314;
+  --foreground: #f2efee;
+  --card: #201c1d;
+  --card-foreground: #f2efee;
+  --popover: #201c1d;
+  --popover-foreground: #f2efee;
+  --primary: #e2556a;
+  --primary-foreground: #1a0a0d;
+  --secondary: #2b2627;
+  --secondary-foreground: #f2efee;
+  --muted: #2b2627;
+  --muted-foreground: #a8a09e;
+  --accent: #2b2627;
+  --accent-foreground: #f2efee;
+  --destructive: #f97362;
+  --border: #322c2d;
+  --input: #3b3435;
+  --ring: #e2556a;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+}
+
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@utility pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* biome-ignore-start lint/complexity/noImportantStyles: must beat component transitions */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+/* biome-ignore-end lint/complexity/noImportantStyles: must beat component transitions */

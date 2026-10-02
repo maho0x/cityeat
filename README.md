@@ -36,7 +36,7 @@ docker compose --profile app up -d --build
 
 ```bash
 pnpm install
-docker compose up -d db         # Postgres 喺 127.0.0.1:5434
+docker compose --profile dev up -d db-dev   # 開發用 Postgres 喺 127.0.0.1:5435
 pnpm db:migrate && pnpm db:seed
 pnpm dev                        # http://localhost:3100
 pnpm menu:sync --once           # 同步一次網上點餐菜單
@@ -48,6 +48,8 @@ pnpm typecheck
 ```
 
 改 schema：編輯 `src/db/schema.ts` → `pnpm db:generate` → `pnpm db:migrate`。
+
+開發同正式資料庫係分開嘅：`.env` 嘅 `DATABASE_URL` 指去 `db-dev`（5435），`pnpm dev`、migration、seed 同 E2E 都用佢。正式網站嘅容器用 `db` service（喺 127.0.0.1:5434 都睇到），唔受 `.env` 嘅 `DATABASE_URL` 影響。
 
 ## 結構
 

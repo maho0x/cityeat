@@ -9,9 +9,9 @@ City 食咩好 is a campus dining site for CityUHK: live opening status, menus (
 ## Commands
 
 ```bash
-docker compose up -d db          # dev Postgres on 127.0.0.1:5434
+docker compose --profile dev up -d db-dev   # dev Postgres on 127.0.0.1:5435
 pnpm db:migrate && pnpm db:seed
-pnpm dev                         # http://localhost:3100 (port 3000 is taken on this host)
+pnpm dev                         # http://localhost:3100 (port 3000 is taken; 3100 is used by the prod container on this host, so pass -p for another port)
 
 pnpm test                        # Vitest unit tests (src/**/*.test.ts)
 pnpm vitest run src/lib/hours.test.ts -t "past midnight"   # single file / test
@@ -24,6 +24,8 @@ pnpm db:generate                 # after editing src/db/schema.ts, then pnpm db:
 
 docker compose --profile app up -d --build   # production stack on :3100 (APP_PORT)
 ```
+
+`.env`'s `DATABASE_URL` points at `db-dev` (5435) and is what local tooling, seeds and E2E use. The production containers override it with the `db` service, which is also exposed on 127.0.0.1:5434, so anything pointed at 5434 writes to production. Port 3100 is the production app.
 
 The E2E server uses `NEXT_DIST_DIR=.next-e2e` so it can run alongside `pnpm dev`. `e2e/teardown.ts` runs as both global setup and teardown. It deletes `e2e.*` users plus their menus, submissions and upload files, and also deletes overrides with notes starting `E2E`. E2E sign-in uses `E2E_FIXED_OTP`. That only works when `NODE_ENV !== "production"`. Without a `RESEND_API_KEY`, OTP codes are printed to the server log (`docker logs cityeat-app-1` in production).
 

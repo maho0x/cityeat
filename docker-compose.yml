@@ -18,6 +18,26 @@ services:
       timeout: 3s
       retries: 10
 
+  # Local development only (pnpm dev, db:migrate, E2E). `db` above is the
+  # production database the app containers use.
+  db-dev:
+    image: postgres:18-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: cityeat
+      POSTGRES_PASSWORD: cityeat
+      POSTGRES_DB: cityeat
+    ports:
+      - "127.0.0.1:5435:5432"
+    volumes:
+      - pgdata-dev:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cityeat"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    profiles: ["dev"]
+
   app:
     build: .
     restart: unless-stopped
@@ -52,4 +72,5 @@ services:
 
 volumes:
   pgdata:
+  pgdata-dev:
   uploads:

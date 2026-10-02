@@ -4,14 +4,18 @@ import { ChevronDown, MapPin } from "lucide-react";
 import { animate, useMotionValue, useReducedMotion } from "motion/react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
-import { useMemo, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Toggle } from "@/components/forms/fields";
-import { useStatuses } from "@/components/restaurant/browser";
+import {
+  useRestaurantMatcher,
+  useStatuses,
+} from "@/components/restaurant/browser";
 import { useViewer } from "@/components/site/viewer-context";
 import { useNow } from "@/hooks/use-now";
 import { formatPrice } from "@/lib/format";
 import { isOpen, type Status } from "@/lib/hours";
 import type { AreaOption, RestaurantSummary } from "@/lib/queries";
+import { type Dish, parseSearch } from "@/lib/search";
 import { cn } from "@/lib/utils";
 import { Wheel } from "./wheel";
 
@@ -30,12 +34,14 @@ function randomIndex(n: number) {
 
 export function Roulette({
   restaurants,
+  dishes,
   areas,
   holidays,
   serverNow,
   initial,
 }: {
   restaurants: RestaurantSummary[];
+  dishes: Dish[];
   areas: AreaOption[];
   holidays: string[];
   serverNow: number;
@@ -45,6 +51,7 @@ export function Roulette({
   const viewer = useViewer();
   const now = useNow(serverNow);
   const statuses = useStatuses(restaurants, holidays, now);
+  const matchesSearch = useRestaurantMatcher(dishes);
   const reduceMotion = useReducedMotion();
 
   const [filters, setFilters] = useState(initial);
@@ -55,25 +62,14 @@ export function Roulette({
   const rotation = useMotionValue(0);
   const resultRef = useRef<HTMLDivElement>(null);
 
-  const candidates = useMemo(() => {
-    const q = filters.query.toLowerCase();
-    return restaurants.filter((r) => {
-      if (filters.openOnly && !isOpen(statuses.get(r.id) as Status))
-        return false;
-      if (filters.favOnly && !r.favorite) return false;
-      if (filters.areas.length && !filters.areas.includes(r.areaSlug))
-        return false;
-      if (
-        q &&
-        ![r.name, r.altName, r.location, ...r.tags]
-          .join(" ")
-          .toLowerCase()
-          .includes(q)
-      )
-        return false;
-      return true;
-    });
-  }, [restaurants, statuses, filters]);
+  const search = parseSearch(filters.query);
+  const candidates = restaurants.filter((r) => {
+    if (filters.openOnly && !isOpen(statuses.get(r.id) as Status)) return false;
+    if (filters.favOnly && !r.favorite) return false;
+    if (filters.areas.length && !filters.areas.includes(r.areaSlug))
+      return false;
+    return matchesSearch(r, search);
+  });
 
   const pool = candidates.filter((r) => !excluded.has(r.id));
   const winnerRestaurant = winner === null ? null : pool[winner];

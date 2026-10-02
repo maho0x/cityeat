@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { isPackaging } from "./filters";
 import type { MenuItemInput, ParsedMenu } from "./types";
 
 /**
@@ -106,13 +107,15 @@ export function parseQmaiMenu(raw: unknown): ParsedMenu {
     for (const it of cat.itemList) {
       const name = clean(it.name);
       if (it.type === NOTICE || it.showPriceLow == null || !name) continue;
+      const price = Math.round(it.showPriceLow * 100);
+      if (isPackaging(name, price)) continue;
       items.push({
         externalId: `${cat.categoryId}:${it.id}`,
         categoryZh: category,
         categoryEn: category,
         nameZh: name,
         nameEn: name,
-        price: Math.round(it.showPriceLow * 100),
+        price,
         imageUrl: it.coverUrl || null,
         available: it.stockStatus === 1 && it.isSaleTime !== 0,
         sort: items.length,

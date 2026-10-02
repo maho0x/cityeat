@@ -5,6 +5,7 @@ import { db, schema } from "@/db";
 import { type Locale, pick } from "@/i18n/config";
 import { addDays, hkClock, type Override, type WeeklyPeriod } from "./hours";
 import { menuPriceRange } from "./menu-sync/price";
+import type { Dish } from "./search";
 import type { Viewer } from "./session";
 import { imageUrl } from "./upload";
 
@@ -142,6 +143,46 @@ export const getMenuPriceRanges = cache(async () => {
     if (range) ranges.set(id, range);
   }
   return ranges;
+});
+
+/**
+ * Every synced dish, for searching by dish. The same dish listed twice at a
+ * restaurant (several categories or counters) is kept once, preferring an
+ * available copy.
+ */
+export const listDishes = cache(async (locale: Locale): Promise<Dish[]> => {
+  const rows = await db
+    .select({
+      restaurantId: schema.menuSource.restaurantId,
+      nameZh: schema.menuItem.nameZh,
+      nameEn: schema.menuItem.nameEn,
+      price: schema.menuItem.price,
+      available: schema.menuItem.available,
+    })
+    .from(schema.menuItem)
+    .innerJoin(
+      schema.menuSource,
+      eq(schema.menuSource.id, schema.menuItem.sourceId),
+    )
+    .where(eq(schema.menuSource.enabled, true))
+    .orderBy(desc(schema.menuItem.available));
+  const seen = new Set<string>();
+  const dishes: Dish[] = [];
+  for (const row of rows) {
+    const key = `${row.restaurantId}|${row.nameZh}|${row.price}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    const name = pick(row, "name", locale);
+    const other = locale === "en" ? row.nameZh : row.nameEn;
+    dishes.push({
+      restaurantId: row.restaurantId,
+      name,
+      altName: other === name ? "" : other,
+      price: row.price,
+      available: row.available,
+    });
+  }
+  return dishes;
 });
 
 export const listRestaurants = cache(

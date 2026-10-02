@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { isPackaging } from "./filters";
 import type { MenuItemInput, ParsedMenu } from "./types";
 
 /** Public menu JSON; the order.place web app loads the same URL. */
@@ -73,7 +74,8 @@ export function parseAigensMenu(raw: unknown): ParsedMenu {
       if (!visible(it) || it.price == null || seen.has(it.id)) continue;
       seen.add(it.id);
       const name = names(it.name, it.name_zh);
-      if (!name.zh) continue;
+      const price = Math.round(it.price * 100);
+      if (!name.zh || isPackaging(`${name.zh} ${name.en}`, price)) continue;
       const img = it.images?.default;
       items.push({
         externalId: it.id,
@@ -81,7 +83,7 @@ export function parseAigensMenu(raw: unknown): ParsedMenu {
         categoryEn: category.en,
         nameZh: name.zh,
         nameEn: name.en,
-        price: Math.round(it.price * 100),
+        price,
         imageUrl: img?.url || img?.source || null,
         available: !it.suspended && it.inventory !== 0,
         sort: items.length,

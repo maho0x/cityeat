@@ -1,6 +1,11 @@
 import { getLocale, getTranslations } from "next-intl/server";
 import { Roulette } from "@/components/roulette/roulette";
-import { getAreas, getHolidays, listRestaurants } from "@/lib/queries";
+import {
+  getAreas,
+  getHolidays,
+  listDishes,
+  listRestaurants,
+} from "@/lib/queries";
 import { getViewer } from "@/lib/session";
 
 export async function generateMetadata() {
@@ -12,8 +17,9 @@ export default async function SpinPage(props: PageProps<"/spin">) {
   const search = await props.searchParams;
   const locale = await getLocale();
   const viewer = await getViewer();
-  const [restaurants, areas, holidays] = await Promise.all([
+  const [restaurants, dishes, areas, holidays] = await Promise.all([
     listRestaurants(locale, viewer),
+    listDishes(locale),
     getAreas(locale),
     getHolidays(),
   ]);
@@ -21,6 +27,7 @@ export default async function SpinPage(props: PageProps<"/spin">) {
   return (
     <Roulette
       restaurants={restaurants}
+      dishes={dishes}
       areas={areas.filter((a) =>
         restaurants.some((r) => r.areaSlug === a.slug),
       )}

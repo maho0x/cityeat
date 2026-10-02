@@ -29,7 +29,7 @@
     "headlineOpen": "而家 {time}，有 {count} 間開緊。",
     "headlineNone": "而家 {time}，暫時冇嘢開。",
     "headlineSub": "城大 {total} 間餐廳嘅營業時間、餐牌同食評。",
-    "search": "搜尋餐廳、位置、類型",
+    "search": "搵餐廳、菜式，或者「咖喱 $40」",
     "openNow": "開緊",
     "favorites": "收藏",
     "allAreas": "全部",
@@ -38,7 +38,10 @@
     "spinThese": "喺呢 {count} 間轉一轉",
     "reviews": "{count, plural, =0 {未有食評} other {# 則食評}}",
     "missing": "搵唔到想食嗰間？",
-    "addRestaurant": "新增餐廳"
+    "addRestaurant": "新增餐廳",
+    "dishResults": "{count} 款菜式",
+    "moreDishes": "睇多 {count} 款",
+    "restaurantResults": "{count} 間餐廳"
   },
   "tags": {
     "fast_food": "快餐",

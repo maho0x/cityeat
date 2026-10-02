@@ -6,7 +6,7 @@ import { useTranslations } from "next-intl";
 import { useDeferredValue, useMemo, useState } from "react";
 import { useViewer } from "@/components/site/viewer-context";
 import { useNow } from "@/hooks/use-now";
-import { formatPrice, formatRating } from "@/lib/format";
+import { formatCents, formatPrice, formatRating } from "@/lib/format";
 import {
   formatMinutes,
   getStatus,
@@ -15,6 +15,13 @@ import {
   type Status,
 } from "@/lib/hours";
 import type { AreaOption, RestaurantSummary } from "@/lib/queries";
+import {
+  type Dish,
+  dishMatches,
+  matchesRestaurant,
+  parseSearch,
+  type SearchQuery,
+} from "@/lib/search";
 import { cn } from "@/lib/utils";
 import { StatusDot, statusTone, useStatusText } from "./status";
 
@@ -46,22 +53,62 @@ export function useStatuses(
   );
 }
 
+/**
+ * Search shared by the home page and the roulette: a restaurant matches on
+ * its name, place and tags, or on any of its synced dishes.
+ */
+export function useRestaurantMatcher(dishes: Dish[]) {
+  const tt = useTranslations("tags");
+  const byRestaurant = useMemo(() => {
+    const map = new Map<number, Dish[]>();
+    for (const d of dishes) {
+      const list = map.get(d.restaurantId) ?? [];
+      list.push(d);
+      map.set(d.restaurantId, list);
+    }
+    return map;
+  }, [dishes]);
+  return (r: RestaurantSummary, q: SearchQuery) =>
+    matchesRestaurant(
+      {
+        haystack: [
+          r.name,
+          r.altName,
+          r.areaName,
+          r.location,
+          ...r.tags,
+          ...r.tags.map((tag) =>
+            tt.has(tag as "cafe") ? tt(tag as "cafe") : tag,
+          ),
+        ].join(" "),
+        priceMin: r.priceMin,
+      },
+      byRestaurant.get(r.id) ?? [],
+      q,
+    );
+}
+
+const DISHES_COLLAPSED = 6;
+
 export function RestaurantBrowser({
   restaurants,
+  dishes,
   areas,
   holidays,
   serverNow,
 }: {
   restaurants: RestaurantSummary[];
+  dishes: Dish[];
   areas: AreaOption[];
   holidays: string[];
   serverNow: number;
 }) {
   const t = useTranslations("home");
-  const tt = useTranslations("tags");
   const viewer = useViewer();
   const now = useNow(serverNow);
   const statuses = useStatuses(restaurants, holidays, now);
+  const matchesSearch = useRestaurantMatcher(dishes);
+  const [showAllDishes, setShowAllDishes] = useState(false);
 
   const [query, setQuery] = useState("");
   const [areaFilter, setAreaFilter] = useState<string | null>(null);
@@ -73,34 +120,33 @@ export function RestaurantBrowser({
     isOpen(statuses.get(r.id) as Status),
   ).length;
 
-  const visible = useMemo(() => {
-    const matches = (r: RestaurantSummary) => {
+  const search = useMemo(() => parseSearch(deferredQuery), [deferredQuery]);
+
+  const visible = restaurants
+    .filter((r) => {
       if (areaFilter && r.areaSlug !== areaFilter) return false;
       if (openOnly && !isOpen(statuses.get(r.id) as Status)) return false;
       if (favOnly && !r.favorite) return false;
-      if (!deferredQuery) return true;
-      const haystack = [
-        r.name,
-        r.altName,
-        r.areaName,
-        r.location,
-        ...r.tags,
-        ...r.tags.map((tag) =>
-          tt.has(tag as "cafe") ? tt(tag as "cafe") : tag,
-        ),
-      ]
-        .join(" ")
-        .toLowerCase();
-      return haystack.includes(deferredQuery);
-    };
-    return restaurants
-      .filter(matches)
-      .sort(
-        (a, b) =>
-          STATE_ORDER[(statuses.get(a.id) as Status).state] -
-          STATE_ORDER[(statuses.get(b.id) as Status).state],
-      );
-  }, [restaurants, statuses, areaFilter, openOnly, favOnly, deferredQuery, tt]);
+      return matchesSearch(r, search);
+    })
+    .sort(
+      (a, b) =>
+        STATE_ORDER[(statuses.get(a.id) as Status).state] -
+        STATE_ORDER[(statuses.get(b.id) as Status).state],
+    );
+
+  // Dishes from the restaurants still in view, available first. With a budget,
+  // the priciest that fit come first (a meal, not a $2 topping); otherwise
+  // the cheapest.
+  const visibleById = new Map(visible.map((r) => [r.id, r]));
+  const priceOrder = search.maxPrice === null ? 1 : -1;
+  const dishHits = dishes
+    .filter((d) => visibleById.has(d.restaurantId) && dishMatches(d, search))
+    .sort(
+      (a, b) =>
+        Number(b.available) - Number(a.available) ||
+        (a.price - b.price) * priceOrder,
+    );
 
   const filtered = !!(areaFilter || openOnly || favOnly || deferredQuery);
   const spinParams = new URLSearchParams();
@@ -110,6 +156,7 @@ export function RestaurantBrowser({
   if (deferredQuery) spinParams.set("q", deferredQuery);
 
   const clear = () => {
+    setShowAllDishes(false);
     setQuery("");
     setAreaFilter(null);
     setOpenOnly(false);
@@ -137,7 +184,10 @@ export function RestaurantBrowser({
           <input
             type="search"
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              setShowAllDishes(false);
+            }}
             placeholder={t("search")}
             className="h-11 w-full rounded-full border bg-card pr-4 pl-10 text-[15px] outline-none placeholder:text-muted-foreground focus:border-foreground/30"
           />
@@ -182,6 +232,40 @@ export function RestaurantBrowser({
           <Dices className="size-4" />
           {t("spinThese", { count: visible.length })}
         </Link>
+      )}
+
+      {dishHits.length > 0 && (
+        <section className="mb-6">
+          <h2 className="mb-1 text-[13px] font-semibold text-muted-foreground">
+            {t("dishResults", { count: dishHits.length })}
+          </h2>
+          <ul className="grid grid-cols-1 md:grid-cols-2 md:gap-x-10">
+            {(showAllDishes
+              ? dishHits
+              : dishHits.slice(0, DISHES_COLLAPSED)
+            ).map((d) => (
+              <DishRow
+                key={`${d.restaurantId}|${d.name}|${d.price}`}
+                dish={d}
+                restaurant={
+                  visibleById.get(d.restaurantId) as RestaurantSummary
+                }
+              />
+            ))}
+          </ul>
+          {!showAllDishes && dishHits.length > DISHES_COLLAPSED && (
+            <button
+              type="button"
+              onClick={() => setShowAllDishes(true)}
+              className="mt-2 text-[14px] font-medium text-muted-foreground hover:text-foreground"
+            >
+              {t("moreDishes", { count: dishHits.length - DISHES_COLLAPSED })}
+            </button>
+          )}
+          <h2 className="mt-6 text-[13px] font-semibold text-muted-foreground">
+            {t("restaurantResults", { count: visible.length })}
+          </h2>
+        </section>
       )}
 
       {visible.length === 0 ? (
@@ -244,6 +328,36 @@ function Chip({
     >
       {children}
     </button>
+  );
+}
+
+function DishRow({
+  dish: d,
+  restaurant: r,
+}: {
+  dish: Dish;
+  restaurant: RestaurantSummary;
+}) {
+  const t = useTranslations("restaurant");
+  return (
+    <li className="border-b">
+      <Link
+        href={`/r/${r.slug}`}
+        className={cn(
+          "-mx-3 flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-card",
+          !d.available && "text-muted-foreground",
+        )}
+      >
+        <div className="min-w-0 flex-1">
+          <p className="text-[15px] font-medium leading-snug">{d.name}</p>
+          <p className="truncate text-[13px] text-muted-foreground">{r.name}</p>
+        </div>
+        <div className="shrink-0 text-right">
+          <p className="font-semibold tabular-nums">{formatCents(d.price)}</p>
+          {!d.available && <p className="text-[12px]">{t("unavailable")}</p>}
+        </div>
+      </Link>
+    </li>
   );
 }
 

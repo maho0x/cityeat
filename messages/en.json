@@ -29,7 +29,7 @@
     "headlineOpen": "It's {time}. {count, plural, one {# place is} other {# places are}} open.",
     "headlineNone": "It's {time}. Nothing's open right now.",
     "headlineSub": "Hours, menus and reviews for {total} places on campus.",
-    "search": "Search by name, building or food",
+    "search": "Search restaurants, dishes, or \"curry $40\"",
     "openNow": "Open now",
     "favorites": "Saved",
     "allAreas": "All",
@@ -38,7 +38,10 @@
     "spinThese": "Spin these {count}",
     "reviews": "{count, plural, =0 {No reviews} one {# review} other {# reviews}}",
     "missing": "Can't find a place?",
-    "addRestaurant": "Add a restaurant"
+    "addRestaurant": "Add a restaurant",
+    "dishResults": "{count, plural, one {# dish} other {# dishes}}",
+    "moreDishes": "{count} more",
+    "restaurantResults": "{count, plural, one {# restaurant} other {# restaurants}}"
   },
   "tags": {
     "fast_food": "Fast food",

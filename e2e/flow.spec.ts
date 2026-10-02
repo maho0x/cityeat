@@ -35,9 +35,11 @@ test("home lists restaurants with live status", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1 })).toContainText("而家");
   await expect(page.getByRole("link", { name: /城大食坊/ })).toBeVisible();
-  await page.getByPlaceholder("搜尋餐廳、位置、類型").fill("清真");
+  await page.getByRole("searchbox").fill("清真");
   await expect(page.getByRole("link", { name: /5380 Cafe/ })).toBeVisible();
-  await expect(page.getByRole("link", { name: /城大食坊/ })).toHaveCount(0);
+  // Coffee Cart has no halal tag or synced menu. (城大食坊 now matches through
+  // its halal dishes once menus have been synced.)
+  await expect(page.getByRole("link", { name: /Coffee Cart/ })).toHaveCount(0);
 });
 
 test("rejects non-CityU email", async ({ page }) => {

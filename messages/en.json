@@ -391,7 +391,8 @@
     "disable": "Disable",
     "enable": "Enable",
     "disabled": "Disabled",
-    "restaurant": "Restaurant"
+    "restaurant": "Restaurant",
+    "priceFromMenu": "This restaurant has a synced ordering menu, so visitors see {price} from it instead of the numbers above."
   },
   "common": {
     "cancel": "Cancel",

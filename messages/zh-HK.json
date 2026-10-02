@@ -391,7 +391,8 @@
     "disable": "停用",
     "enable": "啟用",
     "disabled": "已停用",
-    "restaurant": "餐廳"
+    "restaurant": "餐廳",
+    "priceFromMenu": "呢間餐廳有網上點餐菜單，前台會按菜單價錢顯示 {price}，唔會用上面嘅數字。"
   },
   "common": {
     "cancel": "取消",

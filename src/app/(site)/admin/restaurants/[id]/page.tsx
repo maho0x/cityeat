@@ -4,6 +4,7 @@ import { RestaurantEditor } from "@/components/admin/restaurant-editor";
 import { db, schema } from "@/db";
 import type { NewRestaurantPayload } from "@/db/schema";
 import { getRestaurantForEdit } from "@/lib/admin-queries";
+import { getMenuPriceRanges } from "@/lib/queries";
 
 export default async function EditRestaurantPage(
   props: PageProps<"/admin/restaurants/[id]">,
@@ -51,11 +52,15 @@ export default async function EditRestaurantPage(
     );
   }
 
-  const r = await getRestaurantForEdit(Number(id));
+  const [r, menuPrices] = await Promise.all([
+    getRestaurantForEdit(Number(id)),
+    getMenuPriceRanges(),
+  ]);
   if (!r) notFound();
   return (
     <RestaurantEditor
       areas={areaOptions}
+      menuPrice={menuPrices.get(r.id)}
       initial={{
         id: r.id,
         slug: r.slug,

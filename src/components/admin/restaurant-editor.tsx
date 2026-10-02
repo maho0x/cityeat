@@ -18,6 +18,7 @@ import {
   Toggle,
 } from "@/components/forms/fields";
 import { useActionError } from "@/components/forms/use-action-error";
+import { formatPrice } from "@/lib/format";
 import type { WeeklyPeriod } from "@/lib/hours";
 import { cn } from "@/lib/utils";
 
@@ -62,10 +63,13 @@ export function RestaurantEditor({
   areas,
   initial,
   hint,
+  menuPrice,
 }: {
   areas: { id: number; name: string }[];
   initial: Initial;
   hint?: string;
+  /** Range worked out from synced ordering menus; shown instead of ours. */
+  menuPrice?: [number, number];
 }) {
   const t = useTranslations("admin");
   const tc = useTranslations("common");
@@ -212,6 +216,11 @@ export function RestaurantEditor({
             />
           )}
         </Field>
+        {menuPrice && (
+          <p className="text-[12px] text-muted-foreground sm:col-span-2">
+            {t("priceFromMenu", { price: formatPrice(...menuPrice) ?? "" })}
+          </p>
+        )}
       </div>
       <Field
         label={t("tags")}

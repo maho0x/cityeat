@@ -4,6 +4,7 @@ import { cache } from "react";
 import { db, schema } from "@/db";
 import { type Locale, pick } from "@/i18n/config";
 import { addDays, hkClock, type Override, type WeeklyPeriod } from "./hours";
+import { menuPriceRange } from "./menu-sync/price";
 import type { Viewer } from "./session";
 import { imageUrl } from "./upload";
 
@@ -113,6 +114,36 @@ async function getWeekly(restaurantIds: number[]) {
   return map;
 }
 
+/**
+ * Price ranges worked out from synced ordering menus, by restaurant. These
+ * replace the stored (often estimated) priceMin/priceMax when present.
+ */
+export const getMenuPriceRanges = cache(async () => {
+  const rows = await db
+    .select({
+      restaurantId: schema.menuSource.restaurantId,
+      price: schema.menuItem.price,
+    })
+    .from(schema.menuItem)
+    .innerJoin(
+      schema.menuSource,
+      eq(schema.menuSource.id, schema.menuItem.sourceId),
+    )
+    .where(eq(schema.menuSource.enabled, true));
+  const prices = new Map<number, number[]>();
+  for (const { restaurantId, price } of rows) {
+    const list = prices.get(restaurantId) ?? [];
+    list.push(price);
+    prices.set(restaurantId, list);
+  }
+  const ranges = new Map<number, [number, number]>();
+  for (const [id, list] of prices) {
+    const range = menuPriceRange(list);
+    if (range) ranges.set(id, range);
+  }
+  return ranges;
+});
+
 export const listRestaurants = cache(
   async (
     locale: Locale,
@@ -142,9 +173,10 @@ export const listRestaurants = cache(
       .orderBy(area.sort, restaurant.nameEn);
 
     const ids = rows.map((x) => x.r.id);
-    const [weekly, overrides] = await Promise.all([
+    const [weekly, overrides, menuPrices] = await Promise.all([
       getWeekly(ids),
       getActiveOverrides(ids),
+      getMenuPriceRanges(),
     ]);
 
     return rows.map(({ r, ...x }) => ({
@@ -156,8 +188,8 @@ export const listRestaurants = cache(
       areaName: locale === "en" ? x.areaEn : x.areaZh,
       location: pick(r, "location", locale),
       tags: r.tags,
-      priceMin: r.priceMin,
-      priceMax: r.priceMax,
+      priceMin: menuPrices.get(r.id)?.[0] ?? r.priceMin,
+      priceMax: menuPrices.get(r.id)?.[1] ?? r.priceMax,
       rating: x.rating === null ? null : Number(x.rating),
       reviewCount: x.reviewCount,
       cover: r.coverImage ?? (x.cover ? imageUrl(x.cover, "thumb") : null),
@@ -174,12 +206,16 @@ export async function getRestaurantBySlug(slug: string) {
     with: { area: true },
   });
   if (!r) return null;
-  const [weekly, overrides] = await Promise.all([
+  const [weekly, overrides, menuPrices] = await Promise.all([
     getWeekly([r.id]),
     getActiveOverrides([r.id]),
+    getMenuPriceRanges(),
   ]);
+  const menuPrice = menuPrices.get(r.id);
   return {
     ...r,
+    priceMin: menuPrice?.[0] ?? r.priceMin,
+    priceMax: menuPrice?.[1] ?? r.priceMax,
     weekly: weekly.get(r.id) ?? [],
     overrides: overridesFor(overrides, r.id),
   };

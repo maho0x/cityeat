@@ -249,7 +249,23 @@ export function RestaurantView({
         </p>
       )}
 
+      {/* Phones show menu and reviews before hours and info; desktop keeps
+          hours and info in the sticky right column. */}
       <div className="grid gap-12 md:grid-cols-[minmax(0,1fr)_320px] md:gap-14">
+        <div className="min-w-0 space-y-12 md:col-start-1 md:row-start-1">
+          <MenuSection
+            menus={menus}
+            orderMenus={orderMenus}
+            onUpload={() => open("menu")}
+          />
+          <ReviewSection
+            reviews={reviews}
+            sort={sort}
+            summary={summary}
+            hasMine={!!myReview}
+            onWrite={() => open("review")}
+          />
+        </div>
         <aside className="space-y-8 md:sticky md:top-20 md:col-start-2 md:row-start-1 md:self-start">
           <section>
             <h2 className="mb-3 flex items-center gap-2 text-[15px] font-bold">
@@ -301,20 +317,6 @@ export function RestaurantView({
 
           <div className="hidden md:block">{contributePanel}</div>
         </aside>
-        <div className="min-w-0 space-y-12 md:col-start-1 md:row-start-1">
-          <MenuSection
-            menus={menus}
-            orderMenus={orderMenus}
-            onUpload={() => open("menu")}
-          />
-          <ReviewSection
-            reviews={reviews}
-            sort={sort}
-            summary={summary}
-            hasMine={!!myReview}
-            onWrite={() => open("review")}
-          />
-        </div>
         <div className="md:hidden">{contributePanel}</div>
       </div>
 

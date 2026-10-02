@@ -48,8 +48,13 @@ services:
     environment:
       DATABASE_URL: postgres://cityeat:${POSTGRES_PASSWORD:-cityeat}@db:5432/cityeat
       UPLOAD_DIR: /data/uploads
+    # Public traffic arrives through Nginx Proxy Manager on the proxy network
+    # (https://cityeat.hk -> cityeat-app-1:3000); the port is loopback-only.
     ports:
-      - "${APP_PORT:-3100}:3000"
+      - "127.0.0.1:${APP_PORT:-3100}:3000"
+    networks:
+      - default
+      - proxy
     volumes:
       - uploads:/data/uploads
     profiles: ["app"]
@@ -69,6 +74,11 @@ services:
     healthcheck:
       disable: true
     profiles: ["app"]
+
+networks:
+  proxy:
+    external: true
+    name: ${PROXY_NETWORK:-nginx-proxy-manager_default}
 
 volumes:
   pgdata:

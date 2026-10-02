@@ -1,12 +1,13 @@
 export type MenuPlatform = "aigens" | "qmai";
 export type OrderStore = { platform: MenuPlatform; storeId: string };
 
-const STORE_ID = /^\d{3,12}$/;
+const STORE_ID = /^\d{3,12}(:\d{3,12})?$/;
 
 /**
  * Identify the ordering platform and store from a link or QR-code URL.
  * Aigens: `order.place/(home/)store/{id}` or `scan.aigens.com/scan?code=<base64
- * "store={id}&…">`. Qmai: `qmai.cn/…#pages/…?store_id={id}`.
+ * "store={id}&…">`. Qmai: `qmai.cn/…#pages/…?store_id={seller}&multi_id={shop}`,
+ * stored as `{seller}:{shop}`.
  */
 export function parseOrderUrl(raw: string): OrderStore | null {
   let url: URL;
@@ -30,10 +31,12 @@ export function parseOrderUrl(raw: string): OrderStore | null {
     storeId = new URLSearchParams(decoded).get("store");
   } else if (host.endsWith(".qmai.cn")) {
     platform = "qmai";
-    const query = url.hash.split("?")[1] ?? "";
-    storeId =
-      new URLSearchParams(query).get("store_id") ??
-      url.searchParams.get("store_id");
+    const hash = new URLSearchParams(url.hash.split("?")[1] ?? "");
+    const param = (k: string) => hash.get(k) ?? url.searchParams.get(k);
+    // store_id is the merchant account; multi_id picks one of its shops.
+    const seller = param("store_id");
+    const shop = param("multi_id");
+    storeId = seller && shop ? `${seller}:${shop}` : seller;
   } else {
     return null;
   }

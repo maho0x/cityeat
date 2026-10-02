@@ -3,22 +3,35 @@ import type { MenuItemInput, ParsedMenu } from "./types";
 
 /**
  * Qmai (企迈) only serves menus to a signed-in user. The token is the
- * `Qm-User-Token` request header of pth5.qmai.cn after logging in.
+ * `qm-user-token` request header of pth5.qmai.cn after logging in. HK shops
+ * live on the `webapiga` cluster; `storeId` is `{seller}` or `{seller}:{shop}`
+ * (see parseOrderUrl).
  */
 export function qmaiMenuRequest(storeId: string, token: string) {
+  const [seller, shop] = storeId.split(":");
   return {
-    url: "https://webapi.qmai.cn/web/catering/goods/list/category-item",
+    url: "https://webapiga.qmai.cn/web/catering/goods/list/category-item",
     init: {
       method: "POST",
       headers: {
         Accept: "v=1.0",
+        "Accept-Language": "zh-HK",
         "Content-Type": "application/json",
-        "Qm-From": "wechat",
+        Referer: "https://pth5.qmai.cn/",
+        "Qm-From": "h5",
+        "Qm-From-Type": "catering",
         "Qm-User-Token": token,
-        "store-id": storeId,
+        "store-id": seller,
+        ...(shop && { "multi-store-id": shop }),
       },
-      body: JSON.stringify({ orderType: 2, storeId, buyTime: "", version: 3 }),
-    } satisfies RequestInit,
+      body: JSON.stringify({
+        orderType: 1,
+        storeId: shop ?? seller,
+        buyTime: "",
+        version: 3,
+        appid: "",
+      }),
+    },
   };
 }
 
@@ -55,9 +68,20 @@ const response = z.object({
 
 const clean = (s: string) => s.replace(/\s+/g, " ").trim();
 
+/** Cutlery and cup choices are listed as a category but aren't food. */
+const isCutlery = (category: string) => category.includes("餐具");
+
+/** Shops prefix every category with a code, e.g. "AC3-多士". */
+function sharedPrefix(names: string[]) {
+  const prefix = names[0]?.match(/^[A-Za-z0-9]+-/)?.[0];
+  return prefix && names.length > 1 && names.every((n) => n.startsWith(prefix))
+    ? prefix
+    : "";
+}
+
 /**
- * Menus are Simplified Chinese only, so both languages get the same text.
- * A dish can sit in several categories; each copy is kept.
+ * Menus have Chinese names only, so both languages get the same text. A dish
+ * can sit in several categories; each copy is kept.
  */
 export function parseQmaiMenu(raw: unknown): ParsedMenu {
   const res = response.parse(raw);
@@ -70,9 +94,15 @@ export function parseQmaiMenu(raw: unknown): ParsedMenu {
         : detail,
     );
   }
+  const cats = res.data.categoryItems.map((c) => ({
+    ...c,
+    categoryName: clean(c.categoryName),
+  }));
+  const prefix = sharedPrefix(cats.map((c) => c.categoryName));
   const items: MenuItemInput[] = [];
-  for (const cat of res.data.categoryItems) {
-    const category = clean(cat.categoryName);
+  for (const cat of cats) {
+    if (isCutlery(cat.categoryName)) continue;
+    const category = cat.categoryName.slice(prefix.length);
     for (const it of cat.itemList) {
       const name = clean(it.name);
       if (it.type === NOTICE || it.showPriceLow == null || !name) continue;

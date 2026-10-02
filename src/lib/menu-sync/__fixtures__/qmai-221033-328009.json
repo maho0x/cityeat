@@ -1,0 +1,186 @@
+{
+  "status": true,
+  "code": "0",
+  "message": null,
+  "data": {
+    "categoryItems": [
+      {
+        "categoryId": "1238454817879957505",
+        "categoryName": "AC3-【新品推薦】",
+        "available": 1,
+        "itemList": [
+          {
+            "id": "1299683232866258945",
+            "name": "（新品）【A區】古早菠蘿冰（凍飲）",
+            "coverUrl": "https://images.qmai.cn/s221033/2026/08/26/792afe9a3170859c50.jpg",
+            "showPriceLow": 15,
+            "stockStatus": 1,
+            "isSaleTime": 1,
+            "type": 1
+          },
+          {
+            "id": "1299672577945714689",
+            "name": "（新品）【A區】香煎雞扒日式咖喱飯-套餐",
+            "coverUrl": "https://images.qmai.cn/s221033/2026/08/26/18786cfb58f4b65fff.jpg",
+            "showPriceLow": 43,
+            "stockStatus": 1,
+            "isSaleTime": 1,
+            "type": 3
+          },
+          {
+            "id": "1300873399173300224",
+            "name": "（新品）【A區】炸薯條",
+            "coverUrl": "https://images.qmai.cn/s221033/2025/07/29/6d573434044817dc95.jpg",
+            "showPriceLow": 18,
+            "stockStatus": 1,
+            "isSaleTime": 0,
+            "type": 3
+          },
+          {
+            "id": "1300872426903388161",
+            "name": "（新品）【A區】魷魚圈",
+            "coverUrl": "https://images.qmai.cn/s221033/2025/07/29/6d573434044817dc95.jpg",
+            "showPriceLow": 20,
+            "stockStatus": 1,
+            "isSaleTime": 0,
+            "type": 3
+          }
+        ]
+      },
+      {
+        "categoryId": "1168960110737170432",
+        "categoryName": "AC3-多士",
+        "available": 1,
+        "itemList": [
+          {
+            "id": "1299389984616562688",
+            "name": "（新品）【A區】煉奶鮮油多士-套餐",
+            "coverUrl": "https://images.qmai.cn/s221033/2026/08/26/dca591ce5fba403d47.jpg",
+            "showPriceLow": 22,
+            "stockStatus": 1,
+            "isSaleTime": 0,
+            "type": 3
+          },
+          {
+            "id": "1299388597149253633",
+            "name": "（新品）【A區】黑松露炒蛋多士-套餐",
+            "coverUrl": "https://images.qmai.cn/s221033/2026/08/26/1ac352a4a4c8a9ca2e.jpg",
+            "showPriceLow": 26,
+            "stockStatus": 1,
+            "isSaleTime": 0,
+            "type": 3
+          }
+        ]
+      },
+      {
+        "categoryId": "1204482089635721217",
+        "categoryName": "AC3-特色撈麵-早",
+        "available": 1,
+        "itemList": [
+          {
+            "id": "1204481959639908352",
+            "name": "【A區】咖喱魚蛋蔥油撈麵-套餐",
+            "coverUrl": "https://images.qmai.cn/s221033/2025/12/07/c6f9c1d3716b813a8d.jpg",
+            "showPriceLow": 29,
+            "stockStatus": 1,
+            "isSaleTime": 0,
+            "type": 3
+          },
+          {
+            "id": "1238051817153359872",
+            "name": "【A區】瑞士雞翅撈麵-套餐",
+            "coverUrl": "https://images.qmai.cn/s221033/2026/03/25/007a9ec34a195d0977.jpg",
+            "showPriceLow": 33,
+            "stockStatus": 0,
+            "isSaleTime": 0,
+            "type": 3
+          },
+          {
+            "id": "1155567875190177793",
+            "name": "【A區】蔥油撈麵-套餐",
+            "coverUrl": "https://images.qmai.cn/s221033/2025/12/07/f293c6db8f2a325518.jpg",
+            "showPriceLow": 23,
+            "stockStatus": 0,
+            "isSaleTime": 0,
+            "type": 3
+          }
+        ]
+      },
+      {
+        "categoryId": "1168961973175484416",
+        "categoryName": " AC3-焗飯粉類",
+        "available": 1,
+        "itemList": [
+          {
+            "id": "1244677811025276929",
+            "name": "【A區】茄汁豬扒焗飯-套餐（烹飪需時5-10分鐘）",
+            "coverUrl": "https://images.qmai.cn/s221033/2025/09/02/5dc2e43b293825e095.jpg",
+            "showPriceLow": 43,
+            "stockStatus": 1,
+            "isSaleTime": 1,
+            "type": 3
+          }
+        ]
+      },
+      {
+        "categoryId": "1159201523575390208",
+        "categoryName": "AC3-咖啡飲品",
+        "available": 1,
+        "itemList": [
+          {
+            "id": "1256273343255592960",
+            "name": "【B區】鹹法酪芋泥牛乳",
+            "coverUrl": "https://images.qmai.cn/s221033/2026/01/28/86445e9ae7855338b5.jpg",
+            "showPriceLow": 22,
+            "stockStatus": 1,
+            "isSaleTime": 1,
+            "type": 1
+          },
+          {
+            "id": "1256273199202222081",
+            "name": "【B區】鹹法酪芋泥大紅袍",
+            "coverUrl": "https://images.qmai.cn/s221033/2026/01/28/c32e1a717ea85c2c95.jpg",
+            "showPriceLow": 20,
+            "stockStatus": 1,
+            "isSaleTime": 1,
+            "type": 1
+          }
+        ]
+      },
+      {
+        "categoryId": "1158004764484513793",
+        "categoryName": " AC3-餐具分類",
+        "available": 1,
+        "itemList": [
+          {
+            "id": "1158012447799250945",
+            "name": "不需要餐具",
+            "coverUrl": "https://images.qmai.cn/s221033/2025/07/29/6d573434044817dc95.jpg",
+            "showPriceLow": 0,
+            "stockStatus": 1,
+            "isSaleTime": 1,
+            "type": 1
+          },
+          {
+            "id": "1158005473053380609",
+            "name": "餐具",
+            "coverUrl": "https://images.qmai.cn/s221033/2025/07/12/ea729826cf20c7defd.png",
+            "showPriceLow": 1,
+            "stockStatus": 1,
+            "isSaleTime": 1,
+            "type": 1
+          },
+          {
+            "id": "1158005665869803521",
+            "name": "紙杯",
+            "coverUrl": "https://images.qmai.cn/s221033/2026/08/06/ff25534a1bfd039bde.jpg",
+            "showPriceLow": 1,
+            "stockStatus": 1,
+            "isSaleTime": 1,
+            "type": 1
+          }
+        ]
+      }
+    ]
+  }
+}

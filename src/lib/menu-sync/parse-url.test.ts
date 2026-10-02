@@ -21,10 +21,18 @@ describe("parseOrderUrl", () => {
     expect(parseOrderUrl(url)).toEqual({ platform: "aigens", storeId });
   });
 
-  it("reads the Qmai store_id from the hash route", () => {
+  it("reads the Qmai merchant and multi-store ids from the hash route", () => {
     expect(
       parseOrderUrl(
         "https://pth5.qmai.cn/mp-monorepo-h5/web/index.html#pages/takefood/index?store_id=221033&multi_id=328009",
+      ),
+    ).toEqual({ platform: "qmai", storeId: "221033:328009" });
+  });
+
+  it("reads a Qmai link without a multi-store", () => {
+    expect(
+      parseOrderUrl(
+        "https://pth5.qmai.cn/mp-monorepo-h5/web/index.html#pages/takefood/index?store_id=221033",
       ),
     ).toEqual({ platform: "qmai", storeId: "221033" });
   });

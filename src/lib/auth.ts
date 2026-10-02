@@ -7,6 +7,7 @@ import { eq } from "drizzle-orm";
 import { db, schema } from "@/db";
 import { sendOtpEmail } from "./email";
 import { isCityUEmail, normalizeEmail } from "./email-domain";
+import { randomNickname } from "./nickname";
 
 const EMAIL_PATHS = new Set([
   "/email-otp/send-verification-otp",
@@ -74,7 +75,7 @@ export const auth = betterAuth({
             data: {
               ...u,
               email,
-              name: u.name || email.split("@")[0],
+              name: u.name || randomNickname(),
               role: adminEmails.has(email) ? "admin" : "user",
             },
           };

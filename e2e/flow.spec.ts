@@ -79,7 +79,8 @@ test("student reviews, uploads a menu and reports an hours change; admin approve
   await menuSheet.locator('input[type="file"]').setInputFiles(await pngFile());
   await expect(menuSheet.locator('img[src^="/uploads/"]')).toBeVisible();
   await menuSheet.getByRole("button", { name: "上載", exact: true }).click();
-  await expect(page.getByText(/由 e2e\.student 上載/)).toBeVisible();
+  // New accounts get a random nickname such as "香脆菠蘿包 4821".
+  await expect(page.getByText(/由 \p{Script=Han}+ \d{4} 上載/u)).toBeVisible();
   await page.getByRole("button", { name: "準確" }).click();
   await expect(page.getByRole("button", { name: /準確 1/ })).toBeVisible();
 

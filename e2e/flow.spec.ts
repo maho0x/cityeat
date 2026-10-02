@@ -33,7 +33,7 @@ test.beforeEach(async ({ page }) => {
 
 test("home lists restaurants with live status", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByRole("heading", { level: 1 })).toContainText("而家");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("現在");
   await expect(page.getByRole("link", { name: /城大食坊/ })).toBeVisible();
   await page.getByRole("searchbox").fill("清真");
   await expect(page.getByRole("link", { name: /5380 Cafe/ })).toBeVisible();
@@ -70,7 +70,7 @@ test("student reviews, uploads a menu and reports an hours change; admin approve
   await page.getByRole("button", { name: "發佈食評" }).click();
   await expect(page.getByText("E2E 叉燒飯好食，份量足。")).toBeVisible();
   await expect(
-    page.getByRole("button", { name: "改食評" }).first(),
+    page.getByRole("button", { name: "修改食評" }).first(),
   ).toBeVisible();
 
   // Menu upload
@@ -121,14 +121,14 @@ test("student reviews, uploads a menu and reports an hours change; admin approve
 
   // The student is notified.
   await page.goto("/me");
-  await expect(page.getByText("你嘅報料已通過")).toBeVisible();
+  await expect(page.getByText("你的回報已通過")).toBeVisible();
 });
 
 test("roulette picks a restaurant", async ({ page }) => {
   await page.goto("/spin?open=0");
-  await expect(page.getByText(/由 \d+ 間餐廳入面揀/)).toBeVisible();
+  await expect(page.getByText(/從 \d+ 間餐廳中挑選/)).toBeVisible();
   await page.getByRole("button", { name: "轉！" }).click();
-  await expect(page.getByText("今餐食")).toBeVisible({ timeout: 10_000 });
-  await page.getByRole("link", { name: "就食呢間" }).click();
+  await expect(page.getByText("這餐吃")).toBeVisible({ timeout: 10_000 });
+  await page.getByRole("link", { name: "就吃這間" }).click();
   await page.waitForURL(/\/r\//);
 });

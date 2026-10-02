@@ -66,7 +66,7 @@ Status is computed **on the client**. Pages pass the weekly hours, overrides and
 
 **i18n**: next-intl without URL prefixes. The locale comes from the `locale` cookie, falling back to Accept-Language; the default is `zh-HK`.
 - Message types come from `messages/zh-HK.json` (`src/global.d.ts`), so add every key to both `zh-HK.json` and `en.json`.
-- The zh-HK copy is written in colloquial Cantonese (食咩好、開緊、報料).
+- The zh-HK copy is written in standard written Chinese (書面語: 正在營業、回報), not colloquial Cantonese. The brand name City 食咩好 is the one exception.
 - Bilingual DB columns use `*Zh`/`*En` pairs, read with `pick(row, "name", locale)`.
 
 **Schema notes** (`src/db/schema.ts`):

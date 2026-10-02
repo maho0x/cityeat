@@ -124,7 +124,12 @@
     "reportHours": "報告營業時間變動",
     "correctInfo": "更正資料",
     "overrideNote": "特別安排",
-    "areaRestaurants": "同區其他餐廳"
+    "areaRestaurants": "同區其他餐廳",
+    "orderMenu": "網上點餐菜單",
+    "orderOnline": "去點餐",
+    "orderMenuSynced": "{time}同步自網上點餐，價錢以店舖為準。",
+    "showAllDishes": "睇晒全部 {count} 款",
+    "unavailable": "暫停供應"
   },
   "review": {
     "title": "食評",
@@ -371,7 +376,22 @@
     "manual": "通過後請手動更新餐廳資料。",
     "submittedBy": "{name} 提交",
     "view": "睇睇",
-    "createFrom": "用呢個資料新增"
+    "createFrom": "用呢個資料新增",
+    "menuSync": "菜單同步",
+    "menuSyncHint": "自動由網上點餐平台（order.place / Aigens）攞菜單，每個鐘更新一次。",
+    "addMenuSource": "新增點餐連結",
+    "orderUrl": "點餐連結",
+    "orderUrlHint": "貼上 order.place 或 scan.aigens.com 嘅連結。",
+    "noMenuSources": "未有點餐連結。",
+    "syncNow": "即刻同步",
+    "synced": "已同步 {count} 個菜式",
+    "syncFailed": "同步失敗：{error}",
+    "neverSynced": "未同步過",
+    "lastSynced": "{time} 同步 · {count} 個菜式",
+    "disable": "停用",
+    "enable": "啟用",
+    "disabled": "已停用",
+    "restaurant": "餐廳"
   },
   "common": {
     "cancel": "取消",

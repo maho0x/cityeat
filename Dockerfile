@@ -12,11 +12,14 @@ FROM base AS build
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN pnpm next build
-# Bundle the migration and seed scripts so the runtime image needs no dev deps.
+# Bundle the migration, seed and menu-sync scripts so the runtime image needs
+# no dev deps.
 RUN pnpm exec esbuild scripts/migrate.ts --bundle --platform=node --target=node22 \
       --outfile=dist-scripts/migrate.js \
  && pnpm exec esbuild src/db/seed.ts --bundle --platform=node --target=node22 \
-      --alias:@=./src --outfile=dist-scripts/seed.js
+      --alias:@=./src --outfile=dist-scripts/seed.js \
+ && pnpm exec esbuild scripts/menu-sync.ts --bundle --platform=node --target=node22 \
+      --alias:@=./src --outfile=dist-scripts/menu-sync.js
 
 FROM node:22-bookworm-slim AS runner
 WORKDIR /app

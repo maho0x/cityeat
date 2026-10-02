@@ -25,8 +25,11 @@ docker compose --profile app up -d --build
 | `EMAIL_FROM` | 寄件人，域名要喺 Resend 驗證咗，例如 `City 食咩好 <noreply@你的域名>` |
 | `ADMIN_EMAILS` | 管理員電郵（逗號分隔），登入後即有 `/admin` 權限 |
 | `ALLOWED_EMAIL_DOMAINS` | 選填，預設 `cityu.edu.hk,my.cityu.edu.hk` |
+| `MENU_SYNC_INTERVAL_MINUTES` | 選填，網上點餐菜單同步間隔，預設 `60` |
 
 上載嘅相片存喺 Docker volume `cityeat_uploads`，資料庫喺 `cityeat_pgdata`。
+
+`menu-sync` 容器會定時由網上點餐平台（order.place / Aigens）攞菜單，喺餐廳頁顯示。喺 `/admin/menu-sync` 加點餐連結、即刻同步或者停用；`docker logs cityeat-menu-sync-1` 睇同步紀錄。
 
 ## 開發
 
@@ -35,6 +38,7 @@ pnpm install
 docker compose up -d db         # Postgres 喺 127.0.0.1:5434
 pnpm db:migrate && pnpm db:seed
 pnpm dev                        # http://localhost:3100
+pnpm menu:sync --once           # 同步一次網上點餐菜單
 
 pnpm test        # 單元測試（營業時間計算、電郵域名）
 pnpm test:e2e    # Playwright 全流程（自己起 3199 port，完咗會清走測試資料）

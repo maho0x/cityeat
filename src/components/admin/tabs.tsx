@@ -13,6 +13,7 @@ export function AdminTabs() {
     ["/admin/reports", t("reports")],
     ["/admin/restaurants", t("restaurants")],
     ["/admin/overrides", t("overrides")],
+    ["/admin/menu-sync", t("menuSync")],
     ["/admin/announcements", t("announcements")],
   ] as const;
   return (

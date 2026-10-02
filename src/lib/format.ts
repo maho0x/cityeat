@@ -7,3 +7,8 @@ export function formatPrice(min: number | null, max: number | null) {
 export function formatRating(r: number | null) {
   return r === null ? null : r.toFixed(1);
 }
+
+/** HKD cents → "$38" / "$13.5". */
+export function formatCents(cents: number) {
+  return `$${cents / 100}`;
+}

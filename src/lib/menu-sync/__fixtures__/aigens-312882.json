@@ -1,0 +1,355 @@
+{
+  "status": 1,
+  "data": {
+    "id": 312882,
+    "name": "AC2 Canteen (Xibei Mian Guan)",
+    "name_zh": "AC2 Canteen (西北麵館)",
+    "menu": {
+      "id": "ae0fbcb1-a97d-433b-a649-72de1fdccce7",
+      "categories": [
+        {
+          "id": "e47acf92-21b6-4e3e-9084-350c17e3dce3",
+          "name": "Dessert",
+          "name_zh": "人氣甜點",
+          "published": true,
+          "suspended": false,
+          "archived": false,
+          "periods": ["L", "T", "S6"],
+          "groupIds": ["112882-0709-9192", "112882-0709-9183"]
+        },
+        {
+          "id": "2ae2f5e4-0f8b-465a-810a-2ae67a0e7d70",
+          "name": "Knife-cut Noodles Series",
+          "name_zh": "刀削麵",
+          "published": true,
+          "suspended": false,
+          "archived": false,
+          "periods": ["L", "T", "D"],
+          "groupIds": [
+            "112882-0709-9193",
+            "112882-0709-9214",
+            "112882-0709-9240"
+          ]
+        },
+        {
+          "id": "c8a14e5b-19be-48d9-b468-f593b8840d3d",
+          "name": "Beverage",
+          "name_zh": "飲品",
+          "published": true,
+          "suspended": false,
+          "archived": false,
+          "periods": ["B", "L", "T", "D"],
+          "groupIds": ["112882-0709-9165"]
+        }
+      ],
+      "groups": [
+        {
+          "id": "112882-0709-9192",
+          "name": "Sweet Soup",
+          "name_zh": "滋潤糖水",
+          "optional": false,
+          "min": 0,
+          "max": 1,
+          "items": [
+            {
+              "id": "112882-0709-1100045666",
+              "name": "Red Bean Sweet Soup with Lotus Seeds(Hot)",
+              "name_zh": "蓮子紅豆沙(熱)",
+              "price": 15,
+              "images": {},
+              "published": true,
+              "suspended": false,
+              "archived": false,
+              "inventory": -1
+            },
+            {
+              "id": "112882-0709-1100042831",
+              "name": "Green Bean Sweet Soup with Seaweed(Hot)",
+              "name_zh": "海帶綠豆沙(熱)",
+              "price": 15,
+              "images": {},
+              "published": true,
+              "suspended": false,
+              "archived": false,
+              "inventory": -1
+            },
+            {
+              "id": "112882-0709-1100041371",
+              "name": "Coconut Split Pea Pudding",
+              "name_zh": "馬豆糕",
+              "price": 13.5,
+              "images": {},
+              "published": true,
+              "suspended": false,
+              "archived": false,
+              "inventory": 0
+            },
+            {
+              "id": "112882-0709-1100075941",
+              "name": "Tofu Pudding with Grass Jelly, Taro Balls, and Mini Glutinous Rice Balls",
+              "name_zh": "鮮草芋圓小丸子豆花",
+              "price": 25,
+              "images": {},
+              "published": true,
+              "suspended": false,
+              "archived": false,
+              "inventory": -1
+            }
+          ]
+        },
+        {
+          "id": "112882-0709-9183",
+          "name": "Promotion",
+          "name_zh": "Promotion",
+          "optional": true,
+          "min": 0,
+          "max": 1,
+          "items": [
+            {
+              "id": "112882-0709-1100024561",
+              "name": "+Orange Americano",
+              "name_zh": "+甜橙美式",
+              "price": 17,
+              "images": {
+                "default": {
+                  "width": 400,
+                  "name": "default",
+                  "source": "https://storage.googleapis.com/aigensstoreapp.appspot.com/Image/y4yFpz7lqXKhr64AN12K5A.jpg",
+                  "url": "https://lh3.googleusercontent.com/Zn4sHSBPUfENzAe83eixMLwxMnrfgv2shHbSE7cDlmAviZ2LIBIBM2L9Fwp7OAe3rp8rgF0Sm71WS-rAeZouQf2EqiHxTxQemQGSt1DPBA",
+                  "height": 400
+                }
+              },
+              "published": true,
+              "suspended": false,
+              "archived": false,
+              "inventory": -1
+            },
+            {
+              "id": "112882-0709-1100021240",
+              "name": "+Ice Americano",
+              "name_zh": "+凍美式咖啡",
+              "price": 17,
+              "images": {
+                "default": {
+                  "width": 400,
+                  "name": "default",
+                  "source": "https://storage.googleapis.com/aigensstoreapp.appspot.com/Image/YbhATUkvdGArFL8BGhJEow.jpg",
+                  "url": "https://lh3.googleusercontent.com/Wwb0cATKlciTi4WDSmDiJmf4ft9EJZX0DoLB5TLcLELpyzXCNDN-KPnNtPfnzpyv2uWjhSdj2hft4DIAqT16NSK90Q2H0tigq5XGRRuq",
+                  "height": 400
+                }
+              },
+              "published": true,
+              "suspended": false,
+              "archived": false,
+              "inventory": -1
+            }
+          ]
+        },
+        {
+          "id": "112882-0709-9214",
+          "name": "+ Dumpling",
+          "name_zh": "西北+餃",
+          "optional": true,
+          "min": 0,
+          "max": 1,
+          "items": [
+            {
+              "id": "112882-0709-1100075884",
+              "name": "Add-on Chicken & Chicken Cartilage Dumplings (3 pcs)",
+              "name_zh": "+雞軟骨雞肉餃(3隻)",
+              "price": 13,
+              "images": {},
+              "published": true,
+              "suspended": false,
+              "archived": false,
+              "inventory": -1
+            },
+            {
+              "id": "112882-0709-1100075885",
+              "name": "Add-on Beef & Scallion Dumplings (3 pcs)",
+              "name_zh": "+大蔥牛肉餃((3隻)",
+              "price": 15,
+              "images": {},
+              "published": true,
+              "suspended": false,
+              "archived": false,
+              "inventory": -1
+            }
+          ]
+        },
+        {
+          "id": "112882-0709-9240",
+          "name": "Xibei Mian Guan+Drinks",
+          "name_zh": "西北+飲品",
+          "optional": true,
+          "min": 0,
+          "max": 1,
+          "items": [
+            {
+              "id": "112882-0709-1100020180",
+              "name": "+Hot Coffee",
+              "name_zh": "+熱咖啡",
+              "price": 4,
+              "images": {},
+              "published": true,
+              "suspended": false,
+              "archived": false,
+              "inventory": -1
+            },
+            {
+              "id": "112882-0709-1100024288",
+              "name": "+Hot Black Coffee",
+              "name_zh": "+熱黑咖啡",
+              "price": 4,
+              "images": {},
+              "published": true,
+              "suspended": false,
+              "archived": false,
+              "inventory": -1
+            }
+          ]
+        },
+        {
+          "id": "112882-0709-9193",
+          "name": "Knife-cut Noodles Series",
+          "name_zh": "刀削麵",
+          "optional": false,
+          "min": 0,
+          "max": 1,
+          "items": [
+            {
+              "id": "112882-0709-1100075936",
+              "name": "Tomato with Scrambled Egg with Knife-cut Noodles in Soup",
+              "name_zh": "麻酸辣蕃茄炒蛋撈刀削麵",
+              "price": 38,
+              "images": {},
+              "published": true,
+              "suspended": false,
+              "archived": false,
+              "inventory": -1
+            },
+            {
+              "id": "112882-0709-1100075937",
+              "name": "Pork Chili Pepper with Knife-cut Noodles in Soup",
+              "name_zh": "麻酸辣尖椒肉絲刀削麵",
+              "price": 38,
+              "images": {},
+              "published": true,
+              "suspended": false,
+              "archived": false,
+              "inventory": -1
+            },
+            {
+              "id": "112882-0709-1100075170",
+              "name": "Stirred Knife-cut Noodles with Minced Pork in Spicy and Sour Sauce",
+              "name_zh": "麻酸辣香茜肉碎撈刀削麵",
+              "price": 38,
+              "images": {},
+              "published": true,
+              "suspended": false,
+              "archived": false,
+              "inventory": -1
+            },
+            {
+              "id": "112882-0709-1100075171",
+              "name": "Stirred Knife-cut Noodles with Fried Fish Roll in Spicy and Sour Sauce",
+              "name_zh": "麻酸辣魚肉春卷撈刀削麵",
+              "price": 38,
+              "images": {},
+              "published": true,
+              "suspended": false,
+              "archived": false,
+              "inventory": 0
+            }
+          ]
+        },
+        {
+          "id": "112882-0709-9165",
+          "name": "Beverage",
+          "name_zh": "飲品",
+          "optional": false,
+          "min": 0,
+          "max": 1,
+          "items": [
+            {
+              "id": "112882-0709-1100023215",
+              "name": "red guava soda",
+              "name_zh": "紅芭樂梳打",
+              "price": 19,
+              "images": {
+                "default": {
+                  "width": 400,
+                  "name": "default",
+                  "source": "https://content.aigens.com/image/tmOdfD4lFB9MZ7HCKaDriAfR89HOlswAmxLbJaqHjYo=w400.jpg",
+                  "url": "https://content.aigens.com/image/tmOdfD4lFB9MZ7HCKaDriAfR89HOlswAmxLbJaqHjYo=w400.jpg",
+                  "height": 400
+                }
+              },
+              "published": true,
+              "suspended": false,
+              "archived": false,
+              "inventory": -1
+            },
+            {
+              "id": "112882-0709-1100020003",
+              "name": "Hot Coffee",
+              "name_zh": "熱咖啡",
+              "price": 6,
+              "images": {
+                "default": {
+                  "width": 400,
+                  "name": "default",
+                  "source": "https://storage.googleapis.com/aigensstoreapp.appspot.com/Image/CXR4m9halfYO1jpqGSxdZA.jpg",
+                  "url": "https://lh3.googleusercontent.com/lEoI74AKZzQ9Ui2zDbe9UGdofKAAnDCKGLFMOo8T6WTqTZ_eLYJnzP4enXv_USHWHd2rIEiayB2JxMA7ZbF1HvwyDFAkQtX6vIirF9I5",
+                  "height": 400
+                }
+              },
+              "published": true,
+              "suspended": false,
+              "archived": false,
+              "inventory": -1
+            },
+            {
+              "id": "112882-0709-1100024287",
+              "name": "Hot Black Coffee",
+              "name_zh": "熱黑咖啡",
+              "price": 6,
+              "images": {
+                "default": {
+                  "width": 400,
+                  "name": "default",
+                  "source": "https://content.aigens.com/image/WtQRWJ065du6fdWLtyseB8dM9fHwvfZ7RsprD3gdjcc=w400.jpg",
+                  "url": "https://content.aigens.com/image/WtQRWJ065du6fdWLtyseB8dM9fHwvfZ7RsprD3gdjcc=w400.jpg",
+                  "height": 400
+                }
+              },
+              "published": true,
+              "suspended": false,
+              "archived": false,
+              "inventory": -1
+            },
+            {
+              "id": "112882-0709-1100020004",
+              "name": "Hot Milk Tea",
+              "name_zh": "熱奶茶",
+              "price": 6,
+              "images": {
+                "default": {
+                  "width": 400,
+                  "name": "default",
+                  "source": "https://storage.googleapis.com/aigensstoreapp.appspot.com/Image/xIC9sqSjW0_alYs_R34_qw.jpg",
+                  "url": "https://lh3.googleusercontent.com/2nSzPaKiVG3ioxYL7Gz4A_IGgIhwok-SMjGNCsmIxflShDJMvx6O2T5aGZwPBcSCm034FFS1Xc_yaps_LWSrCBWMAR7fsBH73y7u4nY",
+                  "height": 400
+                }
+              },
+              "published": true,
+              "suspended": false,
+              "archived": false,
+              "inventory": -1
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

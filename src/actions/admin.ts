@@ -6,6 +6,8 @@ import { z } from "zod";
 import { db, schema } from "@/db";
 import type { HoursChangePayload } from "@/db/schema";
 import { ActionFail, action } from "@/lib/action";
+import { parseOrderUrl } from "@/lib/menu-sync/parse-url";
+import { syncSource } from "@/lib/menu-sync/sync";
 
 const admin = { admin: true } as const;
 const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
@@ -180,6 +182,65 @@ export const deleteOverride = action(
     await db
       .delete(schema.hoursOverride)
       .where(eq(schema.hoursOverride.id, id));
+    refresh();
+    return null;
+  },
+  admin,
+);
+
+/* ───────── Ordering-platform menus ───────── */
+
+/** Add an online-ordering link and fetch its menu straight away. */
+export const addMenuSource = action(
+  z.object({ restaurantId: z.number().int(), url: z.string().trim().max(500) }),
+  async ({ restaurantId, url }) => {
+    const store = parseOrderUrl(url);
+    // Only Aigens can be synced so far; Qmai needs a logged-in token.
+    if (store?.platform !== "aigens") throw new ActionFail("INVALID");
+    const [source] = await db
+      .insert(schema.menuSource)
+      .values({ ...store, restaurantId, url })
+      .onConflictDoNothing()
+      .returning();
+    if (!source) throw new ActionFail("INVALID");
+    const result = await syncSource(source);
+    refresh();
+    return result;
+  },
+  admin,
+);
+
+export const syncMenuSource = action(
+  z.object({ id: z.number().int() }),
+  async ({ id }) => {
+    const source = await db.query.menuSource.findFirst({
+      where: eq(schema.menuSource.id, id),
+    });
+    if (!source) throw new ActionFail("NOT_FOUND");
+    const result = await syncSource(source);
+    refresh();
+    return result;
+  },
+  admin,
+);
+
+export const setMenuSourceEnabled = action(
+  z.object({ id: z.number().int(), enabled: z.boolean() }),
+  async ({ id, enabled }) => {
+    await db
+      .update(schema.menuSource)
+      .set({ enabled })
+      .where(eq(schema.menuSource.id, id));
+    refresh();
+    return null;
+  },
+  admin,
+);
+
+export const deleteMenuSource = action(
+  z.object({ id: z.number().int() }),
+  async ({ id }) => {
+    await db.delete(schema.menuSource).where(eq(schema.menuSource.id, id));
     refresh();
     return null;
   },

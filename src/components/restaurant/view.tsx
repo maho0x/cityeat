@@ -18,7 +18,12 @@ import { useRequireSignIn } from "@/components/site/viewer-context";
 import { useNow } from "@/hooks/use-now";
 import { formatPrice } from "@/lib/format";
 import { getStatus, type Override, type WeeklyPeriod } from "@/lib/hours";
-import type { MenuEntry, ReviewEntry, ReviewSort } from "@/lib/queries";
+import type {
+  MenuEntry,
+  OrderMenu,
+  ReviewEntry,
+  ReviewSort,
+} from "@/lib/queries";
 import { cn } from "@/lib/utils";
 import { HoursList } from "./hours-list";
 import { MenuSection } from "./menu-section";
@@ -48,6 +53,7 @@ export function RestaurantView({
   restaurant: r,
   holidays,
   menus,
+  orderMenus,
   reviews,
   sort,
   summary,
@@ -58,6 +64,7 @@ export function RestaurantView({
   restaurant: RestaurantDetail;
   holidays: string[];
   menus: MenuEntry[];
+  orderMenus: OrderMenu[];
   reviews: ReviewEntry[];
   sort: ReviewSort;
   summary: { average: number | null; distribution: number[]; count: number };
@@ -295,7 +302,11 @@ export function RestaurantView({
           <div className="hidden md:block">{contributePanel}</div>
         </aside>
         <div className="min-w-0 space-y-12 md:col-start-1 md:row-start-1">
-          <MenuSection menus={menus} onUpload={() => open("menu")} />
+          <MenuSection
+            menus={menus}
+            orderMenus={orderMenus}
+            onUpload={() => open("menu")}
+          />
           <ReviewSection
             reviews={reviews}
             sort={sort}

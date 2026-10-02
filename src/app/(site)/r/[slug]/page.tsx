@@ -6,6 +6,7 @@ import { pick } from "@/i18n/config";
 import {
   getHolidays,
   getMenus,
+  getOrderMenus,
   getRestaurantBySlug,
   getReviews,
   isFavorite,
@@ -42,8 +43,9 @@ export default async function RestaurantPage(props: PageProps<"/r/[slug]">) {
   ]);
   if (!r) notFound();
 
-  const [menus, reviews, favorite] = await Promise.all([
+  const [menus, orderMenus, reviews, favorite] = await Promise.all([
     getMenus(r.id, viewer),
+    getOrderMenus(r.id, locale),
     getReviews(r.id, viewer, sort),
     viewer ? isFavorite(viewer.id, r.id) : false,
   ]);
@@ -75,6 +77,7 @@ export default async function RestaurantPage(props: PageProps<"/r/[slug]">) {
       }}
       holidays={holidays}
       menus={menus}
+      orderMenus={orderMenus}
       reviews={reviews}
       sort={sort}
       summary={{ average, distribution, count: reviews.length }}

@@ -228,6 +228,62 @@ export const menuVote = pgTable(
   (t) => [primaryKey({ columns: [t.menuId, t.userId] })],
 );
 
+/* ─────────────────────── Ordering-platform menus ─────────────────────── */
+
+export const menuPlatform = pgEnum("menu_platform", ["aigens", "qmai"]);
+
+/**
+ * A store on an online-ordering platform whose menu is mirrored into
+ * `menu_item` by `scripts/menu-sync.ts`. A restaurant can have several (one
+ * per counter). `lastError` is null after a successful sync.
+ */
+export const menuSource = pgTable(
+  "menu_source",
+  {
+    id: serial("id").primaryKey(),
+    restaurantId: integer("restaurant_id")
+      .notNull()
+      .references(() => restaurant.id, { onDelete: "cascade" }),
+    platform: menuPlatform("platform").notNull(),
+    storeId: text("store_id").notNull(),
+    url: text("url").notNull(),
+    storeNameZh: text("store_name_zh").notNull().default(""),
+    storeNameEn: text("store_name_en").notNull().default(""),
+    enabled: boolean("enabled").notNull().default(true),
+    lastSyncedAt: timestamp("last_synced_at", { withTimezone: true }),
+    lastAttemptAt: timestamp("last_attempt_at", { withTimezone: true }),
+    lastError: text("last_error"),
+    itemCount: integer("item_count").notNull().default(0),
+    ...timestamps,
+  },
+  (t) => [
+    uniqueIndex("menu_source_store").on(t.platform, t.storeId),
+    index("menu_source_restaurant_idx").on(t.restaurantId),
+  ],
+);
+
+/** Machine-written mirror of a source's dishes; replaced on every sync. */
+export const menuItem = pgTable(
+  "menu_item",
+  {
+    id: serial("id").primaryKey(),
+    sourceId: integer("source_id")
+      .notNull()
+      .references(() => menuSource.id, { onDelete: "cascade" }),
+    externalId: text("external_id").notNull(),
+    categoryZh: text("category_zh").notNull(),
+    categoryEn: text("category_en").notNull(),
+    nameZh: text("name_zh").notNull(),
+    nameEn: text("name_en").notNull(),
+    /** HKD cents. */
+    price: integer("price").notNull(),
+    imageUrl: text("image_url"),
+    available: boolean("available").notNull().default(true),
+    sort: integer("sort").notNull().default(0),
+  },
+  (t) => [uniqueIndex("menu_item_external").on(t.sourceId, t.externalId)],
+);
+
 export const review = pgTable(
   "review",
   {
@@ -445,6 +501,7 @@ export const restaurantRelations = relations(restaurant, ({ one, many }) => ({
   hours: many(openingHours),
   overrides: many(hoursOverride),
   menus: many(menu),
+  menuSources: many(menuSource),
   reviews: many(review),
 }));
 
@@ -473,6 +530,21 @@ export const menuRelations = relations(menu, ({ one, many }) => ({
 
 export const menuVoteRelations = relations(menuVote, ({ one }) => ({
   menu: one(menu, { fields: [menuVote.menuId], references: [menu.id] }),
+}));
+
+export const menuSourceRelations = relations(menuSource, ({ one, many }) => ({
+  restaurant: one(restaurant, {
+    fields: [menuSource.restaurantId],
+    references: [restaurant.id],
+  }),
+  items: many(menuItem),
+}));
+
+export const menuItemRelations = relations(menuItem, ({ one }) => ({
+  source: one(menuSource, {
+    fields: [menuItem.sourceId],
+    references: [menuSource.id],
+  }),
 }));
 
 export const reviewRelations = relations(review, ({ one, many }) => ({

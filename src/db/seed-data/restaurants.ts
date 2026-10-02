@@ -336,3 +336,30 @@ export const holidays: { date: string; nameZh: string; nameEn: string }[] = [
     nameEn: "First weekday after Christmas Day",
   },
 ];
+
+/**
+ * Online-ordering links whose menus `scripts/menu-sync.ts` mirrors. A deleted
+ * source comes back on the next seed, so disable it in /admin instead.
+ */
+export const menuSources: { restaurant: string; url: string }[] = [
+  {
+    restaurant: "ac2-canteen",
+    url: "https://csd.order.place/home/store/312882?_aigens_source=scan",
+  },
+  {
+    restaurant: "ac2-canteen",
+    url: "https://csd.order.place/home/store/612882?_aigens_source=scan",
+  },
+  {
+    restaurant: "ac2-canteen",
+    url: "https://csd.order.place/store/712882/mode/pickup?_aigens_source=scan&onpremise=true",
+  },
+  {
+    restaurant: "ac2-canteen",
+    url: "https://scan.aigens.com/scan?code=c3RvcmU9MjEyODgyJm1vZGU9cGlja3VwJnBhZ2U9YnlvZA==",
+  },
+  {
+    restaurant: "city-express",
+    url: "https://csd.order.place/store/112870/mode/prekiosk?_aigens_source=scan&onpremise=true",
+  },
+];

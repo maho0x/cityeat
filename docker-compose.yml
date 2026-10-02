@@ -34,6 +34,19 @@ services:
       - uploads:/data/uploads
     profiles: ["app"]
 
+  # Mirrors online-ordering menus hourly (scripts/menu-sync.ts).
+  menu-sync:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file: .env
+    environment:
+      DATABASE_URL: postgres://cityeat:${POSTGRES_PASSWORD:-cityeat}@db:5432/cityeat
+    entrypoint: ["node", "scripts/menu-sync.js"]
+    profiles: ["app"]
+
 volumes:
   pgdata:
   uploads:

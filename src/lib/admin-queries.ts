@@ -130,3 +130,14 @@ export async function getAdminCounts() {
     .from(sql`(select 1) as one`);
   return row;
 }
+
+export async function getMenuSources() {
+  return db
+    .select({
+      source: schema.menuSource,
+      restaurantName: restaurant.nameZh,
+    })
+    .from(schema.menuSource)
+    .innerJoin(restaurant, eq(restaurant.id, schema.menuSource.restaurantId))
+    .orderBy(restaurant.nameZh, schema.menuSource.id);
+}

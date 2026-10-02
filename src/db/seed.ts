@@ -1,7 +1,13 @@
 import "dotenv/config";
 import { parseTime } from "@/lib/hours";
+import { parseOrderUrl } from "@/lib/menu-sync/parse-url";
 import { db, schema } from ".";
-import { areas, holidays, restaurants } from "./seed-data/restaurants";
+import {
+  areas,
+  holidays,
+  menuSources,
+  restaurants,
+} from "./seed-data/restaurants";
 
 /** Idempotent: inserts missing rows only, never overwrites user edits. */
 async function main() {
@@ -46,6 +52,22 @@ async function main() {
   }
 
   await db.insert(schema.publicHoliday).values(holidays).onConflictDoNothing();
+
+  const restaurantId = new Map(
+    (
+      await db
+        .select({ id: schema.restaurant.id, slug: schema.restaurant.slug })
+        .from(schema.restaurant)
+    ).map((r) => [r.slug, r.id]),
+  );
+  const sources = menuSources.flatMap(({ restaurant, url }) => {
+    const store = parseOrderUrl(url);
+    const id = restaurantId.get(restaurant);
+    return store && id ? [{ ...store, url, restaurantId: id }] : [];
+  });
+  if (sources.length) {
+    await db.insert(schema.menuSource).values(sources).onConflictDoNothing();
+  }
   console.info(
     `Seeded: ${areas.length} areas, ${created} new restaurants, ${holidays.length} holidays`,
   );

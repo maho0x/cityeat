@@ -124,7 +124,12 @@
     "reportHours": "Report an hours change",
     "correctInfo": "Correct details",
     "overrideNote": "Special arrangement",
-    "areaRestaurants": "Nearby"
+    "areaRestaurants": "Nearby",
+    "orderMenu": "Online ordering menu",
+    "orderOnline": "Order",
+    "orderMenuSynced": "Synced from online ordering {time}. Prices at the counter may differ.",
+    "showAllDishes": "Show all {count} dishes",
+    "unavailable": "Unavailable"
   },
   "review": {
     "title": "Review",
@@ -371,7 +376,22 @@
     "manual": "After approving, update the restaurant by hand.",
     "submittedBy": "From {name}",
     "view": "View",
-    "createFrom": "Create from this"
+    "createFrom": "Create from this",
+    "menuSync": "Menu sync",
+    "menuSyncHint": "Menus are pulled from online-ordering platforms (order.place / Aigens) every hour.",
+    "addMenuSource": "Add ordering link",
+    "orderUrl": "Ordering link",
+    "orderUrlHint": "Paste an order.place or scan.aigens.com link.",
+    "noMenuSources": "No ordering links yet.",
+    "syncNow": "Sync now",
+    "synced": "Synced {count} dishes",
+    "syncFailed": "Sync failed: {error}",
+    "neverSynced": "Never synced",
+    "lastSynced": "Synced {time} · {count} dishes",
+    "disable": "Disable",
+    "enable": "Enable",
+    "disabled": "Disabled",
+    "restaurant": "Restaurant"
   },
   "common": {
     "cancel": "Cancel",

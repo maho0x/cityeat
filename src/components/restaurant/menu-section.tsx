@@ -15,15 +15,18 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import type { MenuEntry } from "@/lib/queries";
+import type { MenuEntry, OrderMenu } from "@/lib/queries";
 import { cn } from "@/lib/utils";
 import { useLightbox } from "./lightbox";
+import { OrderMenus } from "./order-menu";
 
 export function MenuSection({
   menus,
+  orderMenus,
   onUpload,
 }: {
   menus: MenuEntry[];
+  orderMenus: OrderMenu[];
   onUpload: () => void;
 }) {
   const t = useTranslations("restaurant");
@@ -35,7 +38,7 @@ export function MenuSection({
     <section>
       <div className="mb-4 flex items-baseline justify-between">
         <h2 className="text-[22px] font-black">{t("menu")}</h2>
-        {menus.length > 0 && (
+        {(menus.length > 0 || orderMenus.length > 0) && (
           <button
             type="button"
             onClick={onUpload}
@@ -45,17 +48,24 @@ export function MenuSection({
           </button>
         )}
       </div>
-      {menus.length === 0 ? (
-        <div className="rounded-2xl border border-dashed px-6 py-10 text-center">
-          <p className="text-muted-foreground">{t("noMenu")}</p>
-          <button
-            type="button"
-            onClick={onUpload}
-            className="mt-4 h-10 rounded-full bg-foreground px-5 text-[14px] font-semibold text-background"
-          >
-            {t("uploadFirstMenu")}
-          </button>
+      {orderMenus.length > 0 && (
+        <div className={cn(menus.length > 0 && "mb-8")}>
+          <OrderMenus menus={orderMenus} />
         </div>
+      )}
+      {menus.length === 0 ? (
+        orderMenus.length === 0 && (
+          <div className="rounded-2xl border border-dashed px-6 py-10 text-center">
+            <p className="text-muted-foreground">{t("noMenu")}</p>
+            <button
+              type="button"
+              onClick={onUpload}
+              className="mt-4 h-10 rounded-full bg-foreground px-5 text-[14px] font-semibold text-background"
+            >
+              {t("uploadFirstMenu")}
+            </button>
+          </div>
+        )
       ) : (
         <div className="space-y-8">
           {visible.map((m) => (

@@ -230,6 +230,70 @@ export async function getMenus(
   }));
 }
 
+export type OrderMenu = {
+  id: number;
+  name: string;
+  url: string;
+  syncedAt: Date;
+  categories: {
+    name: string;
+    items: {
+      id: number;
+      name: string;
+      altName: string;
+      price: number;
+      imageUrl: string | null;
+      available: boolean;
+    }[];
+  }[];
+};
+
+/** Menus mirrored from online-ordering platforms, one per store. */
+export async function getOrderMenus(
+  restaurantId: number,
+  locale: Locale,
+): Promise<OrderMenu[]> {
+  const sources = await db.query.menuSource.findMany({
+    where: and(
+      eq(schema.menuSource.restaurantId, restaurantId),
+      eq(schema.menuSource.enabled, true),
+    ),
+    with: { items: { orderBy: schema.menuItem.sort } },
+    orderBy: schema.menuSource.id,
+  });
+  return sources.flatMap((src) => {
+    if (!src.lastSyncedAt || src.items.length === 0) return [];
+    const categories = new Map<string, OrderMenu["categories"][number]>();
+    for (const item of src.items) {
+      const name = pick(item, "category", locale);
+      let cat = categories.get(name);
+      if (!cat) {
+        cat = { name, items: [] };
+        categories.set(name, cat);
+      }
+      const other = locale === "en" ? item.nameZh : item.nameEn;
+      const own = pick(item, "name", locale);
+      cat.items.push({
+        id: item.id,
+        name: own,
+        altName: other === own ? "" : other,
+        price: item.price,
+        imageUrl: item.imageUrl,
+        available: item.available,
+      });
+    }
+    return [
+      {
+        id: src.id,
+        name: pick(src, "storeName", locale),
+        url: src.url,
+        syncedAt: src.lastSyncedAt,
+        categories: [...categories.values()],
+      },
+    ];
+  });
+}
+
 export type ReviewEntry = {
   id: number;
   rating: number;

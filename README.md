@@ -26,10 +26,11 @@ docker compose --profile app up -d --build
 | `ADMIN_EMAILS` | 管理員電郵（逗號分隔），登入後即有 `/admin` 權限 |
 | `ALLOWED_EMAIL_DOMAINS` | 選填，預設 `cityu.edu.hk,my.cityu.edu.hk` |
 | `MENU_SYNC_INTERVAL_MINUTES` | 選填，網上點餐菜單同步間隔，預設 `60` |
+| `QMAI_USER_TOKEN` | 選填，企迈（Qmai）點餐平台嘅登入 token。喺 pth5.qmai.cn 登入後，開 DevTools → Network，喺任何 `webapi.qmai.cn` request 嘅 `Qm-User-Token` header 複製。過期咗要重新攞，改完 `docker compose --profile app up -d` |
 
 上載嘅相片存喺 Docker volume `cityeat_uploads`，資料庫喺 `cityeat_pgdata`。
 
-`menu-sync` 容器會定時由網上點餐平台（order.place / Aigens）攞菜單，喺餐廳頁顯示。喺 `/admin/menu-sync` 加點餐連結、即刻同步或者停用；`docker logs cityeat-menu-sync-1` 睇同步紀錄。
+`menu-sync` 容器會定時由網上點餐平台（order.place / Aigens、企迈 Qmai）攞菜單，喺餐廳頁顯示。喺 `/admin/menu-sync` 加點餐連結、即刻同步或者停用；`docker logs cityeat-menu-sync-1` 睇同步紀錄。
 
 ## 開發
 

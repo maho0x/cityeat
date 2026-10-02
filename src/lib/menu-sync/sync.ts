@@ -1,22 +1,33 @@
 import { and, eq, isNull, lt, or } from "drizzle-orm";
 import { db, schema } from "@/db";
 import { aigensMenuUrl, parseAigensMenu } from "./aigens";
+import { parseQmaiMenu, qmaiMenuRequest } from "./qmai";
 import type { ParsedMenu } from "./types";
 
 type Source = typeof schema.menuSource.$inferSelect;
 
 const { menuSource, menuItem } = schema;
 
-async function fetchMenu(source: Source): Promise<ParsedMenu> {
-  if (source.platform !== "aigens") {
-    throw new Error(`${source.platform} sync is not supported yet`);
-  }
-  const res = await fetch(aigensMenuUrl(source.storeId), {
-    headers: { "User-Agent": "Mozilla/5.0 (compatible; cityeat-menu-sync)" },
+const USER_AGENT = "Mozilla/5.0 (compatible; cityeat-menu-sync)";
+
+async function getJson(url: string, init: RequestInit = {}) {
+  const res = await fetch(url, {
+    ...init,
+    headers: { "User-Agent": USER_AGENT, ...init.headers },
     signal: AbortSignal.timeout(30_000),
   });
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  return parseAigensMenu(await res.json());
+  return res.json();
+}
+
+async function fetchMenu(source: Source): Promise<ParsedMenu> {
+  if (source.platform === "aigens") {
+    return parseAigensMenu(await getJson(aigensMenuUrl(source.storeId)));
+  }
+  const token = process.env.QMAI_USER_TOKEN;
+  if (!token) throw new Error("QMAI_USER_TOKEN is not set");
+  const { url, init } = qmaiMenuRequest(source.storeId, token);
+  return parseQmaiMenu(await getJson(url, init));
 }
 
 /**

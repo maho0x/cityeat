@@ -1,0 +1,187 @@
+{
+  "status": true,
+  "code": "0",
+  "message": null,
+  "data": {
+    "categoryItems": [
+      {
+        "categoryId": "1307388418155802624",
+        "categoryName": "新脏脏茶",
+        "available": 1,
+        "itemList": [
+          {
+            "id": "1307398332170440705",
+            "name": "「脏脏茶虎虎喝」双杯套餐",
+            "coverUrl": "https://images.qmai.cn/s48875/2026/09/28/688d309571a29e08df.jpg",
+            "showPriceLow": 50,
+            "stockStatus": 1,
+            "isSaleTime": 1,
+            "type": 3,
+            "totalInventory": 9999
+          },
+          {
+            "id": "1307390080049176577",
+            "name": "黑糖波霸脏脏茶「小种红茶」",
+            "coverUrl": "https://images.qmai.cn/s48875/2026/09/17/67b7d14af630d9d8e9.jpg",
+            "showPriceLow": 19,
+            "stockStatus": 0,
+            "isSaleTime": 1,
+            "type": 1,
+            "totalInventory": 0
+          },
+          {
+            "id": "1307391213650935809",
+            "name": "焦糖饼干脏脏茶「酥脆焦糖香」",
+            "coverUrl": "https://images.qmai.cn/s48875/2026/09/17/2b6179dc16475221d8.jpg",
+            "showPriceLow": 23,
+            "stockStatus": 0,
+            "isSaleTime": 1,
+            "type": 1,
+            "totalInventory": 0
+          },
+          {
+            "id": "1307392547285843968",
+            "name": "黑糖波霸碎碎冰「浓郁不厚重」",
+            "coverUrl": "https://images.qmai.cn/s48875/2026/09/17/e6f9fe92d883aae5c2.jpg",
+            "showPriceLow": 23,
+            "stockStatus": 0,
+            "isSaleTime": 1,
+            "type": 1,
+            "totalInventory": 0
+          },
+          {
+            "id": "1307397328200937473",
+            "name": "「猛吸一波」单杯套餐",
+            "coverUrl": "https://images.qmai.cn/s48875/2026/09/17/705cae846534b55381.jpg",
+            "showPriceLow": 23.5,
+            "stockStatus": 0,
+            "isSaleTime": 1,
+            "type": 3,
+            "totalInventory": 0
+          }
+        ]
+      },
+      {
+        "categoryId": "650006893552549889",
+        "categoryName": "温馨公告",
+        "available": 1,
+        "itemList": [
+          {
+            "id": "1189622864249290753",
+            "name": "饮用提醒",
+            "coverUrl": "https://images.qmai.cn/s48875/2026/03/25/ae64f70e151bce3b2b.png",
+            "showPriceLow": 0,
+            "stockStatus": 1,
+            "isSaleTime": 1,
+            "type": 10,
+            "totalInventory": 9999
+          },
+          {
+            "id": "933355561276567553",
+            "name": "郑重承诺",
+            "coverUrl": "https://images.qmai.cn/s48875/2026/03/25/fbb8d7ce1d7e6f6b0a.png",
+            "showPriceLow": 0,
+            "stockStatus": 0,
+            "isSaleTime": 1,
+            "type": 10,
+            "totalInventory": 0
+          },
+          {
+            "id": "933355636442914816",
+            "name": "放心选糖",
+            "coverUrl": "https://images.qmai.cn/s48875/2026/03/25/ef3bb020e77426cb6b.png",
+            "showPriceLow": 0,
+            "stockStatus": 0,
+            "isSaleTime": 1,
+            "type": 10,
+            "totalInventory": 0
+          },
+          {
+            "id": "933355836420665344",
+            "name": "匠心有机",
+            "coverUrl": "https://images.qmai.cn/s48875/2026/03/25/ec7dbcab0293fbdd55.png",
+            "showPriceLow": 0,
+            "stockStatus": 0,
+            "isSaleTime": 1,
+            "type": 10,
+            "totalInventory": 0
+          }
+        ]
+      },
+      {
+        "categoryId": "1040935757446070272",
+        "categoryName": "乐乐招牌",
+        "available": 0,
+        "itemList": [
+          {
+            "id": "1098914925643190272",
+            "name": "咸法酪焦糖维也纳",
+            "coverUrl": "https://images.qmai.cn/s48875/2026/08/03/ecbb31f1d4f778d935.jpg",
+            "showPriceLow": 20,
+            "stockStatus": 0,
+            "isSaleTime": 1,
+            "type": 1,
+            "totalInventory": 0
+          },
+          {
+            "id": "918466840492388353",
+            "name": "黑糖波霸脏脏牛乳「不含茶」",
+            "coverUrl": "https://images.qmai.cn/s48875/2026/09/03/5034410b10b7a5ab21.jpg",
+            "showPriceLow": 19,
+            "stockStatus": 0,
+            "isSaleTime": 1,
+            "type": 1,
+            "totalInventory": 0
+          },
+          {
+            "id": "923611768987156481",
+            "name": "草莓桃子「招牌TOP」",
+            "coverUrl": "https://images.qmai.cn/s48875/2026/08/03/705cb582368005a7b1.jpg",
+            "showPriceLow": 19,
+            "stockStatus": 0,
+            "isSaleTime": 1,
+            "type": 1,
+            "totalInventory": 0
+          }
+        ]
+      },
+      {
+        "categoryId": "1243148478992093185",
+        "categoryName": "冰爽鲜果茶",
+        "available": 0,
+        "itemList": [
+          {
+            "id": "923611768987156481",
+            "name": "草莓桃子「招牌TOP」",
+            "coverUrl": "https://images.qmai.cn/s48875/2026/08/03/705cb582368005a7b1.jpg",
+            "showPriceLow": 19,
+            "stockStatus": 0,
+            "isSaleTime": 1,
+            "type": 1,
+            "totalInventory": 0
+          },
+          {
+            "id": "931597657270829056",
+            "name": "黑葡萄「手剥新鲜葡萄」",
+            "coverUrl": "https://images.qmai.cn/s48875/2026/08/03/7dd5400690839e47d0.jpg",
+            "showPriceLow": 18,
+            "stockStatus": 0,
+            "isSaleTime": 1,
+            "type": 1,
+            "totalInventory": 0
+          },
+          {
+            "id": "1220380989943820612",
+            "name": "超浓泰橘冰「泰橘蜜橘，鲜爽解腻」",
+            "coverUrl": "https://images.qmai.cn/s48875/2026/08/03/51c569b3bb2cddcd95.jpg",
+            "showPriceLow": 19,
+            "stockStatus": 0,
+            "isSaleTime": 1,
+            "type": 1,
+            "totalInventory": 0
+          }
+        ]
+      }
+    ]
+  }
+}

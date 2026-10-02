@@ -58,7 +58,7 @@ Status is computed **on the client**. Pages pass the weekly hours, overrides and
 **Ordering-platform menus** (`src/lib/menu-sync/`):
 - `menu_source` rows (one per store; a restaurant can have several counters) are mirrored into `menu_item` by `scripts/menu-sync.ts`, which runs as the `menu-sync` compose service (hourly) or `pnpm menu:sync --once`.
 - Aigens stores (`order.place`, `scan.aigens.com` links): the public JSON at `api.aigens.com/api/v1/menu/store/{id}.json` needs no auth or proxy, although Cloudflare blocks the HTML front end from this server. A category's first group holds its dishes; later groups are ordering steps (add-ons, set drinks, boxes) and are skipped.
-- Qmai (`qmai.cn`) links parse but can't be synced: its menu API needs a logged-in user token.
+- Qmai (`qmai.cn`, AC3 Bistro): `POST webapi.qmai.cn/web/catering/goods/list/category-item` needs a logged-in `Qm-User-Token` from `QMAI_USER_TOKEN`. Login errors (9001/10008) surface as `lastError` telling the admin to refresh the token. Names are Simplified Chinese only, and a dish can appear in several categories, so `externalId` is `categoryId:itemId`.
 - `syncSource()` replaces a source's items in one transaction. Failures and empty menus only set `lastError`, so an outage never wipes the mirror.
 - Seeded sources live in `src/db/seed-data/restaurants.ts` (`menuSources`).
 

@@ -195,8 +195,7 @@ export const addMenuSource = action(
   z.object({ restaurantId: z.number().int(), url: z.string().trim().max(500) }),
   async ({ restaurantId, url }) => {
     const store = parseOrderUrl(url);
-    // Only Aigens can be synced so far; Qmai needs a logged-in token.
-    if (store?.platform !== "aigens") throw new ActionFail("INVALID");
+    if (!store) throw new ActionFail("INVALID");
     const [source] = await db
       .insert(schema.menuSource)
       .values({ ...store, restaurantId, url })

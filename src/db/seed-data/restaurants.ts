@@ -362,4 +362,8 @@ export const menuSources: { restaurant: string; url: string }[] = [
     restaurant: "city-express",
     url: "https://csd.order.place/store/112870/mode/prekiosk?_aigens_source=scan&onpremise=true",
   },
+  {
+    restaurant: "ac3-bistro",
+    url: "https://pth5.qmai.cn/mp-monorepo-h5/web/index.html#pages/takefood/index?store_id=221033&multi_id=328009",
+  },
 ];
